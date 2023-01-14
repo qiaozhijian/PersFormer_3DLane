@@ -618,8 +618,10 @@ class Runner:
             elif args.model_name == "GenLaneNet":
                 model1 = model1.to(device)
                 model2 = model2.to(device)
-        
-        best_file_name = glob.glob(os.path.join(args.save_path, 'model_best*'))[0]
+        if args.resume != '':
+            best_file_name = args.resume
+        else:
+            best_file_name = glob.glob(os.path.join(args.save_path, 'model_best*'))[0]
         if os.path.isfile(best_file_name):
             checkpoint = torch.load(best_file_name)
             if args.proc_id == 0:
@@ -674,11 +676,11 @@ class Runner:
     def _get_valid_dataset(self):
         args = self.args
         if 'openlane' in args.dataset_name:
-            if not args.evaluate_case:
+            if args.evaluate_case == "val":
                 valid_dataset = LaneDataset(args.dataset_dir, args.data_dir + 'validation/', args, seg_bev=args.seg_bev)
             else:
-                # note: for case eval, change the 'up_down_case' to one of case names.['up_down_case','curve_case','extreme_weather_case','intersection_case','merge_split_case','night_case']  
-                valid_dataset = LaneDataset(args.dataset_dir, args.data_dir + 'test/up_down_case/', args, seg_bev=args.seg_bev)
+                assert args.evaluate_case in ['up_down_case','curve_case','extreme_weather_case','intersection_case','merge_split_case','night_case']
+                valid_dataset = LaneDataset(args.dataset_dir, args.data_dir + 'test/{}/'.format(args.evaluate_case), args, seg_bev=args.seg_bev)
 
         elif 'once' in args.dataset_name:
             valid_dataset = LaneDataset(args.dataset_dir, ops.join(args.data_dir, 'test/'), args, seg_bev=args.seg_bev)
