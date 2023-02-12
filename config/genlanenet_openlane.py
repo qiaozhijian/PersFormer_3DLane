@@ -27,8 +27,8 @@ def config(args):
 
     # 1000 sequence
     args.dataset_name = 'openlane'
-    args.dataset_dir = '/mnt/disk01/openlane/images/'
-    args.data_dir = '/mnt/disk01/openlane/lane3d_1000/'
+    args.dataset_dir = '/home/qzj/datasets/OpenLane/images/'
+    args.data_dir = '/home/qzj/datasets/OpenLane/lane3d_1000/'
 
     if 'openlane' in args.dataset_name:
         openlane_config(args)
@@ -39,8 +39,8 @@ def config(args):
     args.save_path = ops.join(args.save_prefix, args.dataset_name)
 
     # for the case only running evaluation
-    args.evaluate = False
-    args.evaluate_case = False
+    # args.evaluate = False
+    # args.evaluate_case = False
 
     # settings for save and visualize
     args.print_freq = 50
