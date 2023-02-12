@@ -15,7 +15,7 @@ do
     fi
 done
 echo $PORT
-python -m torch.distributed.launch --master_port=$PORT --nproc_per_node ${NUM_GPUS} train.py \
+python -m torch.distributed.launch --master_port=$PORT --nproc_per_node ${NUM_GPUS} main_genlanenet.py \
       --mod=${EXPR_NAME} \
       --nepochs=${NUM_EPOCHS} \
       --batch_size=8
