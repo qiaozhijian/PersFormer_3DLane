@@ -22,6 +22,7 @@ from experiments.runner import *
 
 
 def main():
+    print('PyTorch Version: ', torch.__version__)
     parser = define_args() # args in utils.py
     args = parser.parse_args()
     # specify dataset and model config
