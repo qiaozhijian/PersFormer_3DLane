@@ -43,7 +43,7 @@ def config(args):
     # args.evaluate_case = False
 
     # settings for save and visualize
-    args.print_freq = 50
+    args.print_freq = 10
     args.save_freq = 50
 
     args.no_tb = True

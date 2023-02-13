@@ -180,7 +180,8 @@ class Runner:
             # compute timing
             end = time.time()
             # Start training loop
-            for i, (json_files, input, seg_maps, gt, gt_laneline_img, idx, gt_hcam, gt_pitch, gt_intrinsic, gt_extrinsic, aug_mat, seg_name, seg_bev_map) in tqdm(enumerate(train_loader)):
+            pbar = tqdm(total=len(train_loader), leave=False, desc='train', dynamic_ncols=True)
+            for i, (json_files, input, seg_maps, gt, gt_laneline_img, idx, gt_hcam, gt_pitch, gt_intrinsic, gt_extrinsic, aug_mat, seg_name, seg_bev_map) in enumerate(train_loader):
                 # Time dataloader
                 data_time.update(time.time() - end)
                 # Put inputs on gpu if possible
@@ -254,15 +255,18 @@ class Runner:
                 batch_time.update(time.time() - end)
                 end = time.time()
 
+                pbar.update()
+                pbar.set_postfix({'loss': losses.avg})
                 # Print info
-                if (i + 1) % args.print_freq == 0 and args.proc_id == 0:
-                    print('Epoch: [{0}][{1}/{2}]\t'
-                        'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                        'Loss {loss.val:.8f} ({loss.avg:.8f})'.format(epoch+1, i+1, len(train_loader), 
-                                            batch_time=batch_time, data_time=data_time, loss=loss_list[0]))
+                # if (i + 1) % args.print_freq == 0 and args.proc_id == 0:
+                #     print('Epoch: [{0}][{1}/{2}]\t'
+                #         'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+                #         'Loss {loss.val:.8f} ({loss.avg:.8f})'.format(epoch+1, i+1, len(train_loader),
+                #                             batch_time=batch_time, data_time=data_time, loss=loss_list[0]))
 
             # Adjust learning rate
             scheduler.step()
+            pbar.close()
 
             # loss terms need to be all reduced, eval_stats need to be all gather
             # Do them all in validate
