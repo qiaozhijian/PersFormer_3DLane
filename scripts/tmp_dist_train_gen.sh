@@ -20,4 +20,4 @@ export NUM_EPOCHS=40
 python -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} main_genlanenet.py \
       --mod=${EXPR_NAME} \
       --nepochs=${NUM_EPOCHS} \
-      --batch_size=36
+      --batch_size=2
