@@ -49,7 +49,7 @@ def config(args):
     args.no_tb = True
     
     # data loader
-    args.nworkers = 4
+    args.nworkers = 32
     args.use_default_anchor = True
 
     # run the training
